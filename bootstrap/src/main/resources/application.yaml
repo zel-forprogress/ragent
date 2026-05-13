@@ -47,7 +47,7 @@ rag:
 
   default:
     collection-name: rag_default_store
-    dimension: 1536
+    dimension: 1024
     metric-type: COSINE
     sse-timeout-ms: 300000  # SSE 全局超时（毫秒），默认 5 分钟
 
@@ -113,6 +113,7 @@ ai:
       api-key: ${BAILIAN_API_KEY:}
       endpoints:
         chat: /compatible-mode/v1/chat/completions
+        embedding: /compatible-mode/v1/embeddings
         rerank: /api/v1/services/rerank/text-rerank/text-rerank
     siliconflow:
       url: https://api.siliconflow.cn
@@ -129,8 +130,8 @@ ai:
     message-chunk-size: 1
 
   chat:
-    default-model: qwen3-max
-    deep-thinking-model: qwen3-max
+    default-model: qwen-plus
+    deep-thinking-model: qwen-plus
     candidates:
       - id: qwen-plus
         provider: bailian
@@ -141,29 +142,15 @@ ai:
         model: qwen3-max
         supports-thinking: true
         priority: 3
-      - id: glm-4.7
-        provider: siliconflow
-        model: Pro/zai-org/GLM-4.7
-        supports-thinking: true
-        priority: 0
-      - id: qwen3-local
-        provider: ollama
-        model: qwen3:8b-fp16
-        priority: 2
 
   embedding:
     default-model: qwen-emb-8b
     candidates:
       - id: qwen-emb-8b
-        provider: siliconflow
-        model: Qwen/Qwen3-Embedding-8B
+        provider: bailian
+        model: text-embedding-v3
         dimension: ${rag.default.dimension}
         priority: 1
-      - id: qwen-emb-local
-        provider: ollama
-        model: qwen3-embedding:8b-fp16
-        dimension: ${rag.default.dimension}
-        priority: 2
 
   rerank:
     default-model: qwen3-rerank
